@@ -1,11 +1,15 @@
 GET http://localhost:3001/todos
 
 ###
-
-
 POST http://localhost:3001/todo/new
 Content-Type: application/json
 
 {
-    "text": "get the milk"
+    "text": "third todo"
 }
+
+###
+DELETE  http://localhost:3001/todo/delete/651fe5197fd811cae94c3299
+
+###
+PUT http://localhost:3001/todo/complete/651fe759010323f4845b8a85

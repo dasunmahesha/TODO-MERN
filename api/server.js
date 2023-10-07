@@ -22,6 +22,7 @@ app.get("/todos", async (req, res) => {
 
   res.json(todos);
 });
+
 app.post("/todo/new", async (req, res) => {
   const todo = new Todo({
     text: req.body.text,
@@ -30,9 +31,39 @@ app.post("/todo/new", async (req, res) => {
   todo.save();
   res.json(todo);
 });
+
 app.delete("/todo/delete/:id", async (req, res) => {
   const result = await Todo.findByIdAndDelete(req.params.id);
   res.json(result);
+});
+
+// app.put("/todo/complete/:id", async (req, res) => {
+//   const todo = await Todo.findById(req.params.id);
+
+//   todo.complete = !todo.complete;
+
+//   todo.save();
+
+//   res.json(todo);
+// });
+
+app.put("/todo/complete/:id", async (req, res) => {
+  try {
+    const todo = await Todo.findById(req.params.id);
+
+    if (!todo) {
+      return res.status(404).json({ message: "Todo not found" });
+    }
+
+    todo.complete = !todo.complete;
+
+    await todo.save();
+
+    res.json(todo);
+  } catch (error) {
+    console.error("Error updating todo: ", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
 });
 
 app.listen(3001, () => console.log("server started on port 3001"));
